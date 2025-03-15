@@ -1,0 +1,51 @@
+name: Build Desktop App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Linuxの場合、システム依存パッケージ(libportaudio2)のインストール
+      - name: Install system dependencies on Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libportaudio2
+
+      # macOSの場合、Homebrewを使ってportaudioをインストール
+      - name: Install system dependencies on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew update
+          brew install portaudio
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Upgrade pip and install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build executable with PyInstaller
+        run: |
+          pyinstaller PomodoroApp.spec
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: desktop-app-${{ matrix.os }}
+          path: dist/*
