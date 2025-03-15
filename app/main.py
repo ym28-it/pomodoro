@@ -36,4 +36,4 @@ def main(page: ft.Page):
 
 
 if __name__ == "__main__":
-    ft.app(target=main, view=None, host="0.0.0.0", port=8557)
+    ft.app(target=main, view=ft.APP_WINDOW)
