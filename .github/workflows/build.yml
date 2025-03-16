@@ -36,6 +36,8 @@ jobs:
       
       - name: Build with Flet on Windows
         if: runner.os == 'windows'
+        env:
+          PYTHONUTF8: 1
         run: |
           flet build windows
 
