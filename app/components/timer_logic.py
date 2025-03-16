@@ -3,9 +3,6 @@ import flet as ft
 from enum import Enum
 import asyncio
 import threading
-import sounddevice as sd
-import soundfile as sf
-import os
 
 class TimerState(Enum):
     WORK = 1
@@ -148,24 +145,12 @@ def _handle_state_transition(page: ft.Page, timer_display: ft.Text, cycle_count_
     start_time = time.time()
     asyncio.run_coroutine_threadsafe(_run_timer(page, timer_display, cycle_count_display), _global_loop)
 
-def _play_notification_sound():
+def _play_notification_sound(page: ft.Page):
     try:
-        base_path = os.path.dirname(os.path.abspath(__file__))
+        page.audio.src = "assets/end_sound.mp3"
 
-        if current_state == TimerState.WORK:
-            sound_path = os.path.join(base_path, "assets", "work_start.wav")
-        elif current_state == TimerState.SHORT_BREAK:
-            sound_path = os.path.join(base_path, "assets", "short_break.wav")
-        elif current_state == TimerState.LONG_BREAK:
-            sound_path = os.path.join(base_path, "assets", "long_break.wav")
-        else:
-            return  # 再生不要な状態なら何もしない
-
-        # 音声ファイルを読み込んで再生
-        data, fs = sf.read(sound_path, dtype='float32')
-        sd.play(data, fs)
-        sd.wait()  # 再生完了まで待機
-
+        page.audio.play()
+        page.update()
     except Exception as e:
         print("Sound Error:", e)
 

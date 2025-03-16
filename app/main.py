@@ -26,14 +26,12 @@ def route_change(page: ft.Page):
 def main(page: ft.Page):
     page.title = "Pomodoro Timer App"
 
+    page.audio = ft.Audio(autoplay=False)
+    page.add(page.audio)
+
     page.on_route_change = lambda e: route_change(page)
 
     page.go("/timer")
 
-    import sounddevice as sd
-
-    print(sd.query_devices())  # 使用可能なオーディオデバイス一覧を表示
-
-
 if __name__ == "__main__":
-    ft.app(target=main, view=ft.APP_WINDOW)
+    ft.app(main)

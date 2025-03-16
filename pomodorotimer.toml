@@ -1,0 +1,22 @@
+[project]
+name = "pomodoro-timer"
+version = "1.0.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "ym28-it"}
+]
+dependencies = [
+    "flet"
+]
+
+[tool.flet]
+product = "PomodoroTimer"
+copyrignt = "Copyright (C) 2025 by ym28-it"
+
+[tool.flet.app]
+path = "app"
+
+[tool.flet.flutter.dependencies]
+flet_audio = "2.0.0"
