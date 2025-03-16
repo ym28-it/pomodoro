@@ -17,6 +17,7 @@ copyrignt = "Copyright (C) 2025 by ym28-it"
 
 [tool.flet.app]
 path = "app"
+module = "main"
 
 [tool.flet.flutter.dependencies]
 flet_audio = "2.0.0"
